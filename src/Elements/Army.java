@@ -22,7 +22,6 @@ public class Army extends GilgArmy {
         return attackLevel;
     }
 
-    @Override
     public void upgrade() {
         attackLevel++;
     }

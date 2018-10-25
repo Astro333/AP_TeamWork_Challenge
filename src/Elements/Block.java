@@ -1,5 +1,7 @@
 package Elements;
 
+import Elements.Residency.Gilgdoony;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,7 +16,7 @@ public class Block{
     private GilgArmy army;
     private GilgArmy defence;
     private HashMap<Integer, Building> buildings;
-
+    //not to be touched
     public int maxBuildingsId = 1;
 
     private int workingPeople;
@@ -22,8 +24,14 @@ public class Block{
     public HashMap<Integer, Building> getBulildings(){
         return buildings;
     }
-
+    public void addHome(int floor,int unit){
+        buildings.put(Integer.valueOf(maxBuildingsId+1), new Gilgdoony(floor, unit));
+    }
     public int getPopulation(){
+
+        for(Integer id : buildings.keySet()){
+            buildings.get(id);
+        }
         return 0;
     }
 
