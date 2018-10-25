@@ -11,6 +11,11 @@ public class Army extends GilgArmy {
     public static final int costToUpgrade = 20000;
     private int attackLevel = 1;
     private ArrayList<Person> people = new ArrayList<>();
+
+    public int getArmyWorking() {
+        return armyWorking;
+    }
+
     private int armyWorking = 1;
 
     public int getAttackLevel() {
