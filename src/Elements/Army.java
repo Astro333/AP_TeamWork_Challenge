@@ -9,11 +9,6 @@ public class Army extends GilgArmy{
     }
 
     @Override
-    void levelUp() {
-
-    }
-
-    @Override
     void upgrade() {
 
     }

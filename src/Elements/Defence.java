@@ -9,12 +9,7 @@ public class Defence extends GilgArmy{
     }
 
     @Override
-    void levelUp() {
-
-    }
-
-    @Override
     void upgrade() {
-        
+
     }
 }
