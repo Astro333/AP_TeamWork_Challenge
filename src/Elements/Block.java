@@ -16,7 +16,7 @@ public class Block{
 
     private int workingPeople;
 
-    public ArrayList<Building> getBuildings(){
+    public ArrayList<Building> getBulildings(){
         return buildings;
     }
 
