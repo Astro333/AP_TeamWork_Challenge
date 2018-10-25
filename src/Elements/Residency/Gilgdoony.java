@@ -55,4 +55,9 @@ public class Gilgdoony extends Building {
         a -= unitsOfHome(floors , units);
         return (a * 500 + 300);
     }
+
+    @Override
+    protected void upgrade() {
+
+    }
 }
