@@ -1,6 +1,6 @@
 package Elements;
 
-import Elements.Residency.Gilgdoony;
+import Elements.Residency.Home;
 
 import java.util.HashMap;
 
@@ -24,7 +24,7 @@ public class Block{
         return buildings;
     }
     public void addHome(int floor,int unit){
-        buildings.put(maxBuildingsId + 1, new Gilgdoony(floor, unit));
+        buildings.put(maxBuildingsId + 1, new Home(floor, unit));
     }
     public void addBazaar(){
         buildings.put(maxBuildingsId+1,new Bazaar());
@@ -35,11 +35,30 @@ public class Block{
     public void addDefence(){
         buildings.put(maxBuildingsId+1,new Defence());
     }
+
+    public boolean upgradeBuilding(int buildingId){
+
+        if(buildings.get(buildingId) instanceof Bazaar){
+            ((Bazaar)buildings.get(buildingId)).upgrade();
+            return true;
+        }
+
+        else if(buildings.get(buildingId) instanceof Army){
+            ((Bazaar)buildings.get(buildingId)).upgrade();
+            return true;
+        }
+
+        else if(buildings.get(buildingId) instanceof Defence){
+            ((Bazaar)buildings.get(buildingId)).upgrade();
+            return true;
+        }
+        return false;
+    }
     public int getPopulation(){
     int sum = 0;
         for(Integer id : buildings.keySet()){
-           if(buildings.get(id) instanceof Gilgdoony){
-               sum += ((Gilgdoony)buildings.get(id)).getPopulation();
+           if(buildings.get(id) instanceof Home){
+               sum += ((Home)buildings.get(id)).getPopulation();
            }
         }
         return sum;
@@ -60,7 +79,7 @@ public class Block{
 
     }
 
-    boolean upgrade(){
+    public boolean upgrade(){
         //ToDo:must change current Block Capacity for Each Upgrade
         if(level < 3) {
             CURRENT_BLOCK_CAPACITY += 5;

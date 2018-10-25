@@ -2,21 +2,22 @@ package Elements.Residency;
 
 import Elements.Building;
 
-public class Gilgdoony extends Building {
+public class Home extends Building {
     private int floors = 1;
     private int unit = 1;
     private int score;
-    public Gilgdoony(int floors, int units) {
+    public Home(int floors, int units) {
 
         this.floors = floors;
         this.unit = units;
     }
+
     public int getPopulation(){
 
         return (floors * unit) * 5;
     }
 
-    public int costToAddHome(int floor, int unit){
+    public static int costToAddHome(int floor, int unit){
         return unit*100 + floor*300 +700 ;
     }
     public int getUpgradeCost(String command) {
