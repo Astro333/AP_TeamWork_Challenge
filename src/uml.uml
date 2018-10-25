@@ -3,52 +3,51 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="338.16666666666663" y="79.0">Elements.Bazaar</node>
-    <node x="250.0" y="566.0">Elements.Defence</node>
-    <node x="154.16666666666663" y="255.5">Elements.GilgArmy</node>
-    <node x="0.0" y="938.0">Controller</node>
-    <node x="0.0" y="555.0">Elements.Army</node>
-    <node x="411.0" y="0.0">Elements.Building</node>
-    <node x="889.1666666666665" y="0.0">Elements.Block</node>
-    <node x="588.1666666666666" y="145.0">Elements.Residency.Gilgdoony</node>
-    <node x="365.0" y="938.0">Main</node>
+    <node x="0.0" y="938.0">Player</node>
+    <node x="244.0" y="577.0">Elements.Military.Army</node>
+    <node x="589.7916666666666" y="101.0">Elements.Bazaar</node>
+    <node x="1202.7916666666665" y="0.0">Controller</node>
+    <node x="129.79166666666663" y="277.0">Elements.Military.GilgArmy</node>
+    <node x="375.5" y="0.0">Elements.Building</node>
+    <node x="858.7916666666666" y="0.0">Elements.Block</node>
+    <node x="321.0" y="938.0">Main</node>
+    <node x="356.79166666666663" y="189.0">Elements.Residency.Home</node>
+    <node x="0.0" y="599.0">Elements.Military.Defence</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="Elements.GilgArmy" target="Elements.Building">
-      <point x="2.8421709430404007E-14" y="-36.5" />
-      <point x="236.16666666666666" y="54.0" />
-      <point x="426.3333333333333" y="54.0" />
-      <point x="-30.666666666666686" y="14.5" />
-    </edge>
-    <edge source="Elements.Army" target="Elements.GilgArmy">
-      <point x="0.0" y="-169.0" />
-      <point x="115.0" y="530.0" />
-      <point x="195.16666666666663" y="530.0" />
-      <point x="-41.0" y="36.5" />
-    </edge>
-    <edge source="Elements.Defence" target="Elements.GilgArmy">
+    <edge source="Elements.Military.Army" target="Elements.Military.GilgArmy">
       <point x="0.0" y="-158.0" />
-      <point x="365.0" y="530.0" />
-      <point x="277.16666666666663" y="530.0" />
-      <point x="41.00000000000003" y="36.5" />
+      <point x="356.0" y="552.0" />
+      <point x="285.04166666666663" y="552.0" />
+      <point x="51.75" y="37.0" />
+    </edge>
+    <edge source="Elements.Military.GilgArmy" target="Elements.Building">
+      <point x="0.0" y="-37.0" />
+      <point x="233.29166666666663" y="76.0" />
+      <point x="405.0" y="76.0" />
+      <point x="-59.0" y="25.5" />
+    </edge>
+    <edge source="Elements.Residency.Home" target="Elements.Building">
+      <point x="0.0" y="-125.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="Elements.Military.Defence" target="Elements.Military.GilgArmy">
+      <point x="0.0" y="-136.0" />
+      <point x="112.0" y="552.0" />
+      <point x="181.54166666666663" y="552.0" />
+      <point x="-51.75" y="37.0" />
     </edge>
     <edge source="Elements.Bazaar" target="Elements.Building">
       <point x="0.0" y="-213.0" />
-      <point x="453.16666666666663" y="54.0" />
-      <point x="457.0" y="54.0" />
-      <point x="0.0" y="14.5" />
-    </edge>
-    <edge source="Elements.Residency.Gilgdoony" target="Elements.Building">
-      <point x="0.0" y="-147.0" />
-      <point x="716.1666666666666" y="54.0" />
-      <point x="487.6666666666667" y="54.0" />
-      <point x="30.666666666666686" y="14.5" />
+      <point x="701.7916666666666" y="76.0" />
+      <point x="523.0" y="76.0" />
+      <point x="59.0" y="25.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.6651493598862022" x="492.41047015434896" y="417.08513297796264" />
+  <settings layout="Hierarchic Group" zoom="0.4481665014866204" x="381.49747521620577" y="466.84167324082864" />
   <SelectedNodes>
-    <node>Elements.Defence</node>
+    <node>Player</node>
   </SelectedNodes>
   <Categories>
     <Category>Fields</Category>

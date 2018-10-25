@@ -10,9 +10,7 @@ public class Person {
     public int getDaysWorked() {
         return daysWorked;
     }
-    public int incremenetDaysWorked(int daysWorked){
-        this.daysWorked++;
-        return this.daysWorked;
+    public void incremenetDaysWorked(){
+        ++this.daysWorked;
     }
-
 }

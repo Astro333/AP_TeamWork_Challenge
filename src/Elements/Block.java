@@ -1,90 +1,162 @@
 package Elements;
 
+import Elements.Military.Army;
+import Elements.Military.Defence;
 import Elements.Residency.Home;
 
 import java.util.HashMap;
 
 public class Block{
-    //Each Block Maximum level is 3
-    private int CURRENT_BLOCK_CAPACITY = 15;
 
+    public static final int BLOCK_MAX_LEVEL = 3;
+    public boolean hasDefence = false;
+
+
+    private int currentBlockCapacity = 15;
     private int numberOfBuildings = 0;
-
     private int level = 1;
+    private int maxBuildingsId = 0;
 
-    private GilgArmy army;
-    private GilgArmy defence;
+    private int amountOfPeople = 0;
+    private int amountOfWorkingPeople = 0;
+
+    private double peopleScoreMultiplier = 1;
+
     private HashMap<Integer, Building> buildings;
-    //not to be touched
-    private int maxBuildingsId = 1;
 
-    private int workingPeople;
+    public Block(){
+        buildings = new HashMap<>();
+    }
 
-    public HashMap<Integer, Building> getbuildings(){
+    public HashMap<Integer, Building> getBuildings(){
         return buildings;
     }
-    public void addHome(int floor,int unit){
-        buildings.put(maxBuildingsId + 1, new Home(floor, unit));
+
+    public boolean addHome(int floor,int unit){
+        if(numberOfBuildings < currentBlockCapacity) {
+            buildings.put(++maxBuildingsId , new Home(floor, unit));
+            ++numberOfBuildings;
+            amountOfPeople += (floor*unit*5);
+            return true;
+        }
+        return false;
     }
-    public void addBazaar(){
-        buildings.put(maxBuildingsId+1,new Bazaar());
+
+    public boolean addBazaar() {
+        if(numberOfBuildings < currentBlockCapacity && (amountOfPeople - amountOfWorkingPeople) >= 50) {
+            buildings.put(++maxBuildingsId, new Bazaar());
+            ++numberOfBuildings;
+            amountOfWorkingPeople += 50;
+            peopleScoreMultiplier *= 1.2;
+            return true;
+        }
+        return false;
     }
-    public void addArmy(){
-        buildings.put(maxBuildingsId+1,new Army());
+
+    public boolean addArmy() {
+        if(numberOfBuildings < currentBlockCapacity && (amountOfPeople - amountOfWorkingPeople) >= 100) {
+            buildings.put(++maxBuildingsId, new Army());
+            ++numberOfBuildings;
+            amountOfWorkingPeople += 100;
+            return true;
+        }
+        return false;
     }
-    public void addDefence(){
-        buildings.put(maxBuildingsId+1,new Defence());
+
+    public boolean addDefence(){
+        if(!hasDefence && numberOfBuildings < currentBlockCapacity && (amountOfPeople - amountOfWorkingPeople) >= 30) {
+            buildings.put(++maxBuildingsId, new Defence());
+            ++numberOfBuildings;
+            amountOfWorkingPeople += 30;
+            hasDefence = true;
+            return true;
+        }
+        return false;
     }
 
     public boolean upgradeBuilding(int buildingId){
 
         if(buildings.get(buildingId) instanceof Bazaar){
-            ((Bazaar)buildings.get(buildingId)).upgrade();
-            return true;
+            if(amountOfPeople-amountOfWorkingPeople >= 20) {
+                boolean isUpgraded = ((Bazaar) buildings.get(buildingId)).upgrade();
+                if (isUpgraded) {
+                    double temp = ((Bazaar) buildings.get(buildingId)).getScoreMultiplier();
+                    peopleScoreMultiplier = peopleScoreMultiplier*(temp-0.2)/temp;
+                    amountOfWorkingPeople += 20;
+                }
+                return isUpgraded;
+            }
+            return false;
         }
 
         else if(buildings.get(buildingId) instanceof Army){
-            ((Bazaar)buildings.get(buildingId)).upgrade();
-            return true;
+            if(amountOfPeople - amountOfWorkingPeople >= 10) {
+                boolean isUpgraded = ((Army) buildings.get(buildingId)).upgrade();
+                if(isUpgraded)
+                    amountOfWorkingPeople += 10;
+                return isUpgraded;
+            }
+            return false;
         }
 
         else if(buildings.get(buildingId) instanceof Defence){
-            ((Bazaar)buildings.get(buildingId)).upgrade();
-            return true;
+           return ((Defence)buildings.get(buildingId)).upgrade();
         }
         return false;
     }
-    public int getPopulation(){
-    int sum = 0;
-        for(Integer id : buildings.keySet()){
-           if(buildings.get(id) instanceof Home){
-               sum += ((Home)buildings.get(id)).getPopulation();
-           }
-        }
-        return sum;
-    }
 
     public void removeBuilding(int id){
+        Building temp = buildings.get(id);
+        if(temp instanceof Bazaar) {
+            amountOfWorkingPeople -= ((Bazaar)temp).getPeopleWorking();
+            peopleScoreMultiplier /= ((Bazaar) temp).getScoreMultiplier();
+        }
+        else if(temp instanceof Army){
+            amountOfWorkingPeople -= ((Army) temp).getPeopleWorking();
+        }
+
+        else if(temp instanceof Defence)
+            hasDefence = false;
+
         buildings.remove(id);
     }
+    public int getPopulation(){
+        return amountOfPeople;
+    }
+
+    public int getWorkingPeople(){
+        return amountOfWorkingPeople;
+    }
+
+    public int getUpgradeCost(){
+        int temp = 1;
+        for(int i = 0 ; i < level ; ++i)
+            temp *= 500;
+        return temp;
+    }
+
     public int getLevel(){
         return level ;
     }
 
-    public int getCURRENT_BLOCK_CAPACITY() {
-        return CURRENT_BLOCK_CAPACITY;
-    }
-
-    public Block(){
-
+    public int getCurrentBlockCapacity() {
+        return currentBlockCapacity;
     }
 
     public boolean upgrade(){
-        //ToDo:must change current Block Capacity for Each Upgrade
-        if(level < 3) {
-            CURRENT_BLOCK_CAPACITY += 5;
+        if(level < BLOCK_MAX_LEVEL) {
+            currentBlockCapacity += 5;
+            ++level;
             return true;
         }
         return false;
+    }
+
+    public int getScore() {
+        int score = 0;
+        for(Building building : buildings.values()){
+            score += building.getScore(peopleScoreMultiplier);
+        }
+        return score;
     }
 }

@@ -3,64 +3,49 @@ package Elements.Residency;
 import Elements.Building;
 
 public class Home extends Building {
-    private int floors = 1;
-    private int unit = 1;
-    private int score;
-    public Home(int floors, int units) {
 
+    public static final int unitBaseScore = 2;
+    public static final int floorBaseScore = 3;
+    public static final int homeBaseScore = 10;
+    private int floors;
+    private int unitPerFloor;
+
+    public Home(int floors, int units) {
         this.floors = floors;
-        this.unit = units;
+        this.unitPerFloor = units;
     }
 
     public int getPopulation(){
-
-        return (floors * unit) * 5;
+        return (floors * unitPerFloor) * 5;
     }
 
-    public static int costToAddHome(int floor, int unit){
+    public static int getAdditionCost(int floor, int unit){
         return unit*100 + floor*300 +700 ;
     }
     public int getUpgradeCost(String command) {
         switch (command) {
             case "floor":
-                return costToUpgradeHomeFloors();
+                return 300;
             case "unit":
-                return costToUpgradeHomeUnit();
+                return floors*50;
             case "floor unit":
-                return costToUpgradeHomeFloorUnit();
+                return (unitPerFloor + floors + 1)*500+300;
         }
         return -1;
     }
 
-    private void addFloor(){
-        ++floors;
-    }
-    private void addUnit() {
-        ++unit;
-    }
-    private int costToUpgradeHomeFloors() {
-        int a ;
-        a  = (floors +1) * (unit);
-        a -= (floors * unit);
-        return (a * 500 + 300) ;
-    }
-    private int  costToUpgradeHomeUnit(){
-    int a ;
-    a = floors * (unit + 1);
-    a -= floors * unit;
-    return ((a * 500));
-    }
-
-    private int  costToUpgradeHomeFloorUnit(){
-        int a ;
-        a = (floors + 1) * (unit + 1);
-        a -= (floors * unit);
-        return (a * 500 + 300);
-    }
-
     public boolean upgrade(){
-        addFloor();
-        addUnit();
-        return true;
+        if(floors < 6 && unitPerFloor < 4) {
+            ++floors;
+            ++unitPerFloor;
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public int getScore(double scoreMultiplier){
+        int score = 0;
+
+        //e+sum(floor)+sum(unit)*2+sum(person)*3
     }
 }

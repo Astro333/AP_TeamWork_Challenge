@@ -33,7 +33,7 @@ public class Controller {
 
     private Player p1, p2;
     private Player currentPlayer;
-
+    private Player frontPlayer;
     private boolean isProcessing = true;
 
     public boolean isProcessing() {
@@ -54,6 +54,12 @@ public class Controller {
     public void startProcessing(){
 
         isProcessing = true;
+
+        p1 = new Player();
+        p2 = new Player();
+
+        StringBuilder log = new StringBuilder();
+
         String input;
         input = scanner.next();
         input = input.toLowerCase();
@@ -61,39 +67,46 @@ public class Controller {
         while(!input.equals("yield")){
 
             if(input.matches(ADD_BLOCK_COMMAND_REGEX)){
-                Integer blockId = currentPlayer.lastBlockId;
-                currentPlayer.playerBlocks.put(blockId, new Block());
-                ++currentPlayer.lastBlockId;
+
+                currentPlayer.playerBlocks.put(++currentPlayer.lastBlockId, new Block());
+                log.append(currentPlayer.lastBlockId).append("\n");
             }
+
             else if(input.matches(REMOVE_BLOCK_COMMAND_REGEX)){
-                Integer blockId = Integer.valueOf(input.split(" ")[1]);
-                if(currentPlayer.lastBlockId == blockId)
-                    --currentPlayer.lastBlockId;
-                currentPlayer.playerBlocks.remove(blockId);
+
+                int blockId = Integer.parseInt(input.split(" ")[1]);
+                currentPlayer.removeBlock(blockId);
             }
             else if(input.matches(UPGRADE_BLOCK_COMMAND_REGEX)){
-                Integer blockId = Integer.valueOf(input.split(" ")[1]);
-                currentPlayer.playerBlocks.get(blockId).upgrade();
+                int blockId = Integer.parseInt(input.split(" ")[1]);
+                currentPlayer.upgradeBlock(blockId);
             }
+
 
 
             else if(input.matches(ADD_HOME_COMMAND_REGEX)){
+
                 String[] s = input.split(" ");
                 int blockId = Integer.parseInt(s[2]);
                 int floor = Integer.parseInt(s[3]);
                 int unit = Integer.parseInt(s[4]);
-
-                currentPlayer.playerBlocks.get(blockId).addHome(floor, unit);
+                if(!currentPlayer.addHome(blockId, floor, unit))
+                    log.append("not possible\n");
             }
             else if(input.matches(UPGRADE_HOME_COMMAND_REGEX)){
                 String[] s = input.split(" ");
                 int blockId = Integer.parseInt(s[1]);
                 int homeId = Integer.parseInt(s[2]);
+                //means command is unit or floor
                 if(s.length == 4){
-                    currentPlayer.upgradeHome(blockId, homeId, s[3]);
+                    if(!currentPlayer.upgradeHome(blockId, homeId, s[3]))
+                        log.append("not possible\n");
+
                 }
                 else if(s.length == 5){
-                    currentPlayer.upgradeHome(blockId, homeId, s[3]+" "+s[4]);
+
+                    if(!currentPlayer.upgradeHome(blockId, homeId, s[3]+" "+s[4]))
+                        log.append("not possible\n");
                 }
             }
 
@@ -101,20 +114,42 @@ public class Controller {
             else if(input.matches(ADD_BUILDING_COMMAND_REGEX)){
                 String[] s = input.split(" ");
                 int blockId = Integer.parseInt(s[2]);
-                currentPlayer.addBuilding(s[1], blockId);
+                if(!currentPlayer.addBuilding(s[1], blockId))
+                    log.append("not possible\n");
             }
             else if(input.matches(REMOVE_BUILDING_COMMAND_REGEX)){
                 String[] s = input.split(" ");
                 int blockId = Integer.parseInt(s[1]);
                 int buildingId = Integer.parseInt(s[2]);
-
-                currentPlayer.removeBuilding(buildingId, blockId);
+                if(!currentPlayer.removeBuilding(buildingId, blockId))
+                    log.append("not possible\n");
             }
             else if(input.matches(UPGRADE_BUILDING_COMMAND_REGEX)){
                 String[] s = input.split(" ");
                 int blockId = Integer.parseInt(s[1]);
                 int buildingId = Integer.parseInt(s[2]);
-                currentPlayer.upgradeBuilding(buildingId, blockId);
+                if(!currentPlayer.upgradeBuilding(buildingId, blockId))
+                    log.append("not possible\n");
+            }
+
+            else if(input.equals("done")){
+                currentPlayer.passDay();
+            }
+
+            else if(input.equals("see gills")){
+                log.append(currentPlayer.getCredit()).append("\n");
+            }
+
+            else if(input.matches("loot \\d+")){
+                String s = input.split(" ")[1];
+                int lootedAmount = frontPlayer.loot(Integer.parseInt(s));
+                if(lootedAmount < 0){
+                    log.append("not possible\n");
+                }
+
+                else{
+                    currentPlayer.addCredit(lootedAmount);
+                }
             }
 
             input = scanner.next();
