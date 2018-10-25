@@ -21,7 +21,7 @@ public class Block{
 
     private int workingPeople;
 
-    public HashMap<Integer, Building> getBulildings(){
+    public HashMap<Integer, Building> getbuildings(){
         return buildings;
     }
     public void addHome(int floor,int unit){
@@ -37,15 +37,17 @@ public class Block{
         buildings.put(maxBuildingsId+1,new Defence());
     }
     public int getPopulation(){
-
+    int sum = 0;
         for(Integer id : buildings.keySet()){
-            buildings.get(id);
+           if(buildings.get(id) instanceof Gilgdoony){
+               sum += ((Gilgdoony)buildings.get(id)).getPopulation();
+           }
         }
-        return 0;
+        return sum;
     }
 
     public void removeElement(int id){
-        //must handle
+
     }
 
     public Block(){

@@ -11,9 +11,9 @@ public class Gilgdoony extends Building {
         this.floors = floors;
         this.units  = units;
     }
-    public int getPopulation(int floor , int unit){
+    public int getPopulation(){
 
-        return (floor *unit) * 5;
+        return (floors *units) * 5;
     }
 
     public int costToAddHome(int floor, int unit){
