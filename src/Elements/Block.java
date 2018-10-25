@@ -1,6 +1,7 @@
 package Elements;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Block{
     //Each Block Maximum level is 3
@@ -12,11 +13,13 @@ public class Block{
 
     private GilgArmy army;
     private GilgArmy defence;
-    private ArrayList<Building> buildings;
+    private HashMap<Integer, Building> buildings;
+
+    public int maxBuildingsId = 1;
 
     private int workingPeople;
 
-    public ArrayList<Building> getBulildings(){
+    public HashMap<Integer, Building> getBulildings(){
         return buildings;
     }
 
