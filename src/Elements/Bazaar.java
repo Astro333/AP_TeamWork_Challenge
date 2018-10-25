@@ -30,7 +30,6 @@ public class Bazaar extends Building {
         return level;
     }
 
-    @Override
     public void upgrade() {
         level++;
     }
