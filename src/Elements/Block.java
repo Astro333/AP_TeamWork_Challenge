@@ -25,7 +25,16 @@ public class Block{
         return buildings;
     }
     public void addHome(int floor,int unit){
-        buildings.put(Integer.valueOf(maxBuildingsId+1), new Gilgdoony(floor, unit));
+        buildings.put(maxBuildingsId + 1, new Gilgdoony(floor, unit));
+    }
+    public void addBazaar(){
+        buildings.put(maxBuildingsId+1,new Bazaar());
+    }
+    public void addArmy(){
+        buildings.put(maxBuildingsId+1,new Army());
+    }
+    public void addDefence(){
+        buildings.put(maxBuildingsId+1,new Defence());
     }
     public int getPopulation(){
 
