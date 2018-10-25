@@ -2,12 +2,11 @@ package Elements;
 
 import Elements.Residency.Gilgdoony;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Block{
     //Each Block Maximum level is 3
-    private int MAX_BLOCK_CAPACITY = 15;
+    private int CURRENT_BLOCK_CAPACITY = 15;
 
     private int numberOfBuildings = 0;
 
@@ -17,7 +16,7 @@ public class Block{
     private GilgArmy defence;
     private HashMap<Integer, Building> buildings;
     //not to be touched
-    public int maxBuildingsId = 1;
+    private int maxBuildingsId = 1;
 
     private int workingPeople;
 
@@ -46,11 +45,27 @@ public class Block{
         return sum;
     }
 
-    public void removeElement(int id){
+    public void removeBuilding(int id){
+        buildings.remove(id);
+    }
+    public int getLevel(){
+        return level ;
+    }
 
+    public int getCURRENT_BLOCK_CAPACITY() {
+        return CURRENT_BLOCK_CAPACITY;
     }
 
     public Block(){
 
+    }
+
+    boolean upgrade(){
+        //ToDo:must change current Block Capacity for Each Upgrade
+        if(level < 3) {
+            CURRENT_BLOCK_CAPACITY += 5;
+            return true;
+        }
+        return false;
     }
 }

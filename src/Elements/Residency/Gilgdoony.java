@@ -30,19 +30,19 @@ public class Gilgdoony extends Building {
         }
         return 0 ;
     }
-    public int costToUpgradeHomeFloors(int floors) {
+    private int costToUpgradeHomeFloors(int floors) {
         int a ;
         a  = floors + (1 * units );
         a -= (floors *units);
         return (a * 500 + floors*300) ;
     }
-    public int  costToUpgradeHomeUnit(int units){
+    private int  costToUpgradeHomeUnit(int units){
     int a ;
     a = floors * (units + 1);
     a -= floors * units;
     return ((a * 500));
     }
-    public int  costToUpgradeHomeFloorUnit(int floors,int units){
+    private int  costToUpgradeHomeFloorUnit(int floors, int units){
         int a ;
         a = (floors + 1) * (units + 1);
         a -= (floors * units);
