@@ -14,4 +14,5 @@ public class Person {
         this.daysWorked++;
         return this.daysWorked;
     }
+    return 0 ;
 }
