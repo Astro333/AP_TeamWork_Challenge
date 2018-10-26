@@ -1,5 +1,6 @@
 package Elements.Military;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Army extends GilgArmy {
@@ -8,11 +9,13 @@ public class Army extends GilgArmy {
     public static final int PEOPLE_NEEDED_TO_UPGRADE = 10;
     public static final int COST_TO_BUILD = 15000;
     public static final int COST_TO_UPGRADE = 20000;
+    public static final int COST_TO_REMOVE = -10000;
     public static final int ARMY_BASE_SCORE = 10;
 
     private int attackLevel = 1;
 
     public Army(Integer[] peopleToAddIds){
+        peopleInsideIds = new ArrayList<>();
         peopleInsideIds.addAll(Arrays.asList(peopleToAddIds));
     }
 

@@ -4,6 +4,8 @@ public class Person {
 
     public Person(boolean isWorking){
         this.isWorking = isWorking;
+        this.id = lastPersonId;
+        ++lastPersonId;
     }
     private int id;
     public static int lastPersonId = 1;
@@ -31,5 +33,9 @@ public class Person {
 
     public boolean isWorking() {
         return isWorking;
+    }
+
+    public int getId() {
+        return id;
     }
 }

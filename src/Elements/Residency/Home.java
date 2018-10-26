@@ -25,6 +25,7 @@ public class Home extends Building {
     public Home(int floors, int units, Integer[] peopleToAdd) {
         this.floors = floors;
         this.unitPerFloor = units;
+        peopleInsideIds = new ArrayList<>();
         peopleInsideIds.addAll(Arrays.asList(peopleToAdd));
     }
 
@@ -33,7 +34,7 @@ public class Home extends Building {
     }
 
     public static int getAdditionCost(int floor, int unit){
-        return unit*100 + floor*300 +700 ;
+        return unit*floor*100 + floor*300 +700 ;
     }
     public int getUpgradeCost(String command) {
         switch (command) {
@@ -58,19 +59,17 @@ public class Home extends Building {
     @Override
     public double getScore(double scoreMultiplier){
 
-        double peopleScore = scoreMultiplier * PEOPLE_IN_EACH_UNIT;
+        double peopleScore = scoreMultiplier * PEOPLE_IN_EACH_UNIT * unitPerFloor * floors;
 
-        double unitsScore = (PEOPLE_IN_EACH_UNIT*scoreMultiplier + UNIT_BASE_SCORE)*unitPerFloor;
+        double unitsScore = (PEOPLE_IN_EACH_UNIT*scoreMultiplier + UNIT_BASE_SCORE)*unitPerFloor*floors;
 
         double floorsScore = ((PEOPLE_IN_EACH_UNIT*scoreMultiplier + UNIT_BASE_SCORE)*unitPerFloor +
                 2*scoreMultiplier*unitPerFloor*PEOPLE_IN_EACH_UNIT + FLOOR_BASE_SCORE)*floors;
-
         double homeScore = ((PEOPLE_IN_EACH_UNIT*scoreMultiplier + UNIT_BASE_SCORE)*unitPerFloor +
                 2*scoreMultiplier*unitPerFloor*PEOPLE_IN_EACH_UNIT + FLOOR_BASE_SCORE) * floors +
                 2*(PEOPLE_IN_EACH_UNIT*scoreMultiplier + UNIT_BASE_SCORE)*unitPerFloor*floors +
                            3*scoreMultiplier*PEOPLE_IN_EACH_UNIT * unitPerFloor * floors +
                             HOME_BASE_SCORE;
-
         return (homeScore + unitsScore + floorsScore + peopleScore);
     }
 }

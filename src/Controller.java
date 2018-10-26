@@ -51,7 +51,7 @@ public class Controller {
         StringBuilder log = new StringBuilder();
 
         String input;
-        input = scanner.next();
+        input = scanner.nextLine();
         input = input.toLowerCase();
 
         while(!input.equals("yield")){
@@ -59,6 +59,9 @@ public class Controller {
             if(input.matches(ADD_BLOCK_COMMAND_REGEX)){
                 if(!currentPlayer.addBlock())
                     log.append("not possible\n");
+                else{
+                    log.append(currentPlayer.lastBlockId).append("\n");
+                }
             }
 
             else if(input.matches(REMOVE_BLOCK_COMMAND_REGEX)){
@@ -80,7 +83,12 @@ public class Controller {
                 int unit = Integer.parseInt(s[4]);
                 if(!currentPlayer.addHome(blockId, floor, unit))
                     log.append("not possible\n");
+                else{
+                    int addedBuildingId = currentPlayer.getOwnedBlocks().get(blockId).getLastBuildingId();
+                    log.append(addedBuildingId).append("\n");
+                }
             }
+
             else if(input.matches(UPGRADE_HOME_COMMAND_REGEX)){
                 String[] s = input.split(" ");
                 int blockId = Integer.parseInt(s[1]);
@@ -102,6 +110,10 @@ public class Controller {
                 int blockId = Integer.parseInt(s[2]);
                 if(!currentPlayer.addBuilding(s[1], blockId))
                     log.append("not possible\n");
+                else{
+                    int addedBuildingId = currentPlayer.getOwnedBlocks().get(blockId).getLastBuildingId();
+                    log.append(addedBuildingId).append("\n");
+                }
             }
             else if(input.matches(REMOVE_BUILDING_COMMAND_REGEX)){
                 String[] s = input.split(" ");
@@ -154,13 +166,16 @@ public class Controller {
             else if(input.matches("attack \\d+")){
                 String s = input.split(" ")[1];
                 int blockId = Integer.parseInt(s);
-
-
             }
 
-            input = scanner.next();
+            input = scanner.nextLine();
             input = input.toLowerCase();
         }
+
+        System.out.print(log);
+        double maxScore = p1.getScore() >= p2.getScore() ? p1.getScore() : p2.getScore();
+        double minScore = p1.getScore() <= p2.getScore() ? p1.getScore() : p2.getScore();
+        System.out.printf("%.2f %.2f", maxScore, minScore);
 
         isProcessing = false;
     }
