@@ -1,5 +1,3 @@
-import Elements.Block;
-
 import java.util.Scanner;
 
 public class Controller {
@@ -38,17 +36,6 @@ public class Controller {
 
     public boolean isProcessing() {
         return isProcessing;
-    }
-
-    private void addCreditToPlayer(Player p){
-        int amount = 0;
-        //ToDo: calculate amount based on player
-        p.addCredit(amount);
-    }
-
-    private void showScore(Player p){}
-
-    private void addBlock(Player currentPlayer){
     }
 
     public void startProcessing(){
