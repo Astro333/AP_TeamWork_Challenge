@@ -2,17 +2,30 @@ package Elements.Residency;
 
 import Elements.Building;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Home extends Building {
 
-    public static final int unitBaseScore = 2;
-    public static final int floorBaseScore = 3;
-    public static final int homeBaseScore = 10;
+    public static final int UNIT_BASE_SCORE = 2;
+    public static final int FLOOR_BASE_SCORE = 3;
+    public static final int HOME_BASE_SCORE = 10;
+
+    public static final int MAX_FLOOR = 6;
+    public static final int MAX_UNIT_PER_FLOOR = 4;
+
+    public static final int MIN_FLOOR = 3;
+    public static final int MIN_UNIT_PER_FLOOR = 1;
+
+    public static final int PEOPLE_IN_EACH_UNIT = 5;
+
     private int floors;
     private int unitPerFloor;
 
-    public Home(int floors, int units) {
+    public Home(int floors, int units, Integer[] peopleToAdd) {
         this.floors = floors;
         this.unitPerFloor = units;
+        peopleInsideIds.addAll(Arrays.asList(peopleToAdd));
     }
 
     public int getPopulation(){
@@ -35,7 +48,7 @@ public class Home extends Building {
     }
 
     public boolean upgrade(){
-        if(floors < 6 && unitPerFloor < 4) {
+        if(floors < MAX_FLOOR && unitPerFloor < MAX_UNIT_PER_FLOOR) {
             ++floors;
             ++unitPerFloor;
             return true;
@@ -43,9 +56,21 @@ public class Home extends Building {
         return false;
     }
     @Override
-    public int getScore(double scoreMultiplier){
-        int score = 0;
+    public double getScore(double scoreMultiplier){
 
-        //e+sum(floor)+sum(unit)*2+sum(person)*3
+        double peopleScore = scoreMultiplier * PEOPLE_IN_EACH_UNIT;
+
+        double unitsScore = (PEOPLE_IN_EACH_UNIT*scoreMultiplier + UNIT_BASE_SCORE)*unitPerFloor;
+
+        double floorsScore = ((PEOPLE_IN_EACH_UNIT*scoreMultiplier + UNIT_BASE_SCORE)*unitPerFloor +
+                2*scoreMultiplier*unitPerFloor*PEOPLE_IN_EACH_UNIT + FLOOR_BASE_SCORE)*floors;
+
+        double homeScore = ((PEOPLE_IN_EACH_UNIT*scoreMultiplier + UNIT_BASE_SCORE)*unitPerFloor +
+                2*scoreMultiplier*unitPerFloor*PEOPLE_IN_EACH_UNIT + FLOOR_BASE_SCORE) * floors +
+                2*(PEOPLE_IN_EACH_UNIT*scoreMultiplier + UNIT_BASE_SCORE)*unitPerFloor*floors +
+                           3*scoreMultiplier*PEOPLE_IN_EACH_UNIT * unitPerFloor * floors +
+                            HOME_BASE_SCORE;
+
+        return (homeScore + unitsScore + floorsScore + peopleScore);
     }
 }

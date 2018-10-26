@@ -1,32 +1,29 @@
 package Elements.Military;
 
+import java.util.Arrays;
+
 public class Army extends GilgArmy {
     public static final int ARMY_MAX_LEVEL = 5;
-    public static final int peopleNeededToBuild = 100;
-    public static final int peopleNeededToUpgrade = 10;
-    public static final int costToBuild = 15000;
-    public static final int costToUpgrade = 20000;
-    public static final int armyBaseScore = 10;
+    public static final int PEOPLE_NEEDED_TO_BUILD = 100;
+    public static final int PEOPLE_NEEDED_TO_UPGRADE = 10;
+    public static final int COST_TO_BUILD = 15000;
+    public static final int COST_TO_UPGRADE = 20000;
+    public static final int ARMY_BASE_SCORE = 10;
 
-    private int peopleWorking = 0;
     private int attackLevel = 1;
 
-    public int getPeopleWorking() {
-        return peopleWorking;
-    }
-
-    public Army(){
-        peopleWorking += peopleNeededToBuild;
+    public Army(Integer[] peopleToAddIds){
+        peopleInsideIds.addAll(Arrays.asList(peopleToAddIds));
     }
 
     public int getAttackLevel() {
         return attackLevel;
     }
 
-    public boolean upgrade() {
+    public boolean upgrade(Integer[] peopleToAddIds) {
         if(attackLevel < ARMY_MAX_LEVEL) {
             ++attackLevel;
-            peopleWorking += peopleNeededToUpgrade;
+            peopleInsideIds.addAll(Arrays.asList(peopleToAddIds));
             return true;
         }
         return false;
@@ -38,10 +35,11 @@ public class Army extends GilgArmy {
     }
 
     @Override
-    public int getScore(double scoreMultiplier) {
-        int i, score = 1;
+    public double getScore(double scoreMultiplier) {
+        int i;
+        double score = 1;
         for (i = 0; i < daysAlive; i++) {
-            score *= armyBaseScore;
+            score *= ARMY_BASE_SCORE;
         }
         return score;
     }

@@ -151,6 +151,13 @@ public class Controller {
                 }
             }
 
+            else if(input.matches("attack \\d+")){
+                String s = input.split(" ")[1];
+                int blockId = Integer.parseInt(s);
+
+
+            }
+
             input = scanner.next();
             input = input.toLowerCase();
         }

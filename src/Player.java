@@ -41,7 +41,7 @@ public class Player {
                 }
                 break;
             case "army":
-                if(credit >= Army.costToBuild && !hasArmy) {
+                if(credit >= Army.COST_TO_BUILD && !hasArmy) {
                     ownedBlocks.get(blockId).addArmy();
                     hasArmy = true;
                     return true;
@@ -67,7 +67,8 @@ public class Player {
     }
 
     public boolean addHome(int blockId, int floor, int unit) {
-        if(floor <= 6 && floor >= 3 && unit >= 1 && unit <= 4)
+        if(floor <= Home.MAX_FLOOR && floor >= Home.MIN_FLOOR &&
+           unit >= Home.MIN_UNIT_PER_FLOOR && unit <= Home.MAX_UNIT_PER_FLOOR)
             return ownedBlocks.get(blockId).addHome(floor, unit);
         return false;
     }
@@ -102,7 +103,7 @@ public class Player {
 
     public void passDay() {
         for(Block block : ownedBlocks.values()) {
-            block.getPopulation();
+            credit += block.getBlockIncome();
         }
     }
 

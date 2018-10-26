@@ -1,5 +1,8 @@
 package Elements;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Bazaar extends Building {
 
     public static final int BAZAAR_MAX_LEVEL = 3;
@@ -10,17 +13,13 @@ public class Bazaar extends Building {
     public static final int COST_TO_REMOVE = 500;
     public static final int BAZAAR_BASE_SCORE = 5;
 
-    private int peopleWorking = 0;
-
     private double scoreMultiplier = 1.2;
 
-    public Bazaar(){
-        peopleWorking += PEOPLE_NEEDED_TO_BUILD;
+    public Bazaar(Integer[] peopleToAdd){
+        peopleInsideIds = new ArrayList<>();
+        peopleInsideIds.addAll(Arrays.asList(peopleToAdd));
     }
 
-    public int getPeopleWorking() {
-        return peopleWorking;
-    }
 
     public double getScoreMultiplier() {
         return scoreMultiplier;
@@ -37,11 +36,11 @@ public class Bazaar extends Building {
         return level;
     }
 
-    public boolean upgrade() {
+    public boolean upgrade(Integer[] peopleToAdd) {
         if(level < BAZAAR_MAX_LEVEL) {
             ++level;
             scoreMultiplier += 0.2;
-            peopleWorking += PEOPLE_NEEDED_TO_UPGRADE;
+            peopleInsideIds.addAll(Arrays.asList(peopleToAdd));
             return true;
         }
         return false;
@@ -56,8 +55,9 @@ public class Bazaar extends Building {
     }
 
     @Override
-    public int getScore(double scoreMultiplier) {
-        int i, score = 1;
+    public double getScore(double scoreMultiplier) {
+        int i;
+        double score = 1;
         for (i = 0; i < daysActive; i++) {
             score *= BAZAAR_BASE_SCORE;
         }
