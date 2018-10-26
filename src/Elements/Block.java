@@ -9,6 +9,9 @@ import java.util.HashMap;
 public class Block{
 
     public static final int BLOCK_MAX_LEVEL = 3;
+    public static final int COST_TO_ADD = 1000;
+    public static final int COST_TO_REMOVE = -500;
+
     public boolean hasDefence = false;
 
 
@@ -32,7 +35,11 @@ public class Block{
         return buildings;
     }
 
-    public boolean addHome(int floor,int unit){
+    public int getNumberOfBuildings() {
+        return numberOfBuildings;
+    }
+
+    public boolean addHome(int floor, int unit){
         if(numberOfBuildings < currentBlockCapacity) {
             buildings.put(++maxBuildingsId , new Home(floor, unit));
             ++numberOfBuildings;

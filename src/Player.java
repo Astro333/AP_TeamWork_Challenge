@@ -7,13 +7,17 @@ import java.util.HashMap;
 
 public class Player {
 
-    HashMap<Integer, Block> playerBlocks;
+    private HashMap<Integer, Block> ownedBlocks;
 
     public int lastBlockId = 1;
     private int credit = 30_000;
 
 
     private boolean hasArmy = false;
+
+    public HashMap<Integer, Block> getOwnedBlocks() {
+        return ownedBlocks;
+    }
 
     public int getCredit() {
         return credit;
@@ -24,37 +28,28 @@ public class Player {
     }
 
     public Player(){
-        playerBlocks = new HashMap<>();
-    }
-
-    public boolean removeBuilding(int buildingId, int blockId){
-        playerBlocks.get(blockId).removeBuilding(buildingId);
-        return true;
-    }
-
-    public boolean upgradeBuilding(int buildingId, int blockId){
-        return playerBlocks.get(blockId).upgradeBuilding(buildingId);
+        ownedBlocks = new HashMap<>();
     }
 
     public boolean addBuilding(String buildingName, int blockId){
 
         switch (buildingName){
             case "bazaar":
-                if(credit >= Bazaar.costToBuild) {
-                    playerBlocks.get(blockId).addBazaar();
+                if(credit >= Bazaar.COST_TO_BUILD) {
+                    ownedBlocks.get(blockId).addBazaar();
                     return true;
                 }
                 break;
             case "army":
                 if(credit >= Army.costToBuild && !hasArmy) {
-                    playerBlocks.get(blockId).addArmy();
+                    ownedBlocks.get(blockId).addArmy();
                     hasArmy = true;
                     return true;
                 }
                 break;
             case "defence":
                 if(credit >= Defence.costToBuild) {
-                    playerBlocks.get(blockId).addDefence();
+                    ownedBlocks.get(blockId).addDefence();
                     return true;
                 }
                 break;
@@ -62,53 +57,67 @@ public class Player {
         return false;
     }
 
+    public boolean upgradeBuilding(int buildingId, int blockId){
+        return ownedBlocks.get(blockId).upgradeBuilding(buildingId);
+    }
+
+    public boolean removeBuilding(int buildingId, int blockId){
+        ownedBlocks.get(blockId).removeBuilding(buildingId);
+        return true;
+    }
+
     public boolean addHome(int blockId, int floor, int unit) {
         if(floor <= 6 && floor >= 3 && unit >= 1 && unit <= 4)
-            return playerBlocks.get(blockId).addHome(floor, unit);
+            return ownedBlocks.get(blockId).addHome(floor, unit);
         return false;
     }
-
     public boolean upgradeHome(int blockId, int homeId, String command){
-        if(credit >= ((Home)playerBlocks.get(blockId).getBuildings().get(homeId)).getUpgradeCost(command))
-            return ((Home)playerBlocks.get(blockId).getBuildings().get(homeId)).upgrade();
+        if(credit >= ((Home) ownedBlocks.get(blockId).getBuildings().get(homeId)).getUpgradeCost(command))
+            return ((Home) ownedBlocks.get(blockId).getBuildings().get(homeId)).upgrade();
         return false;
     }
 
+    public boolean addBlock(){
+        if(credit >= Block.COST_TO_ADD) {
+            ownedBlocks.put(++lastBlockId, new Block());
+            return true;
+        }
+        return false;
+    }
     public void removeBlock(int blockId){
 
-        playerBlocks.remove(blockId);
+        ownedBlocks.remove(blockId);
 
         int maximumIdBlock = Integer.MIN_VALUE;
 
-        for(Integer i : playerBlocks.keySet()){
+        for(Integer i : ownedBlocks.keySet()){
             if (maximumIdBlock < i)
                 maximumIdBlock = i;
         }
         lastBlockId = maximumIdBlock;
     }
-
     public boolean upgradeBlock(int blockId) {
-        return playerBlocks.get(blockId).upgrade();
+        return ownedBlocks.get(blockId).upgrade();
     }
 
     public void passDay() {
-        for(Block block : playerBlocks.values()) {
+        for(Block block : ownedBlocks.values()) {
             block.getPopulation();
         }
     }
 
     public int getScore(){
         int score = 0;
-        for(Block block : playerBlocks.values()){
+        for(Block block : ownedBlocks.values()){
             score += block.getScore();
         }
         return score;
     }
 
-    public int loot(int blockId) {
-        if(playerBlocks.get(blockId).hasDefence)
+    public int loot(Player opponent, int blockId) {
+        if(opponent.ownedBlocks.get(blockId).hasDefence)
             return -1;
-        return 1;
+        return opponent.ownedBlocks.get(blockId).getNumberOfBuildings() * 500;
     }
 }
 

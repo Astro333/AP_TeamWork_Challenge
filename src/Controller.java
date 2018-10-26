@@ -58,6 +58,9 @@ public class Controller {
         p1 = new Player();
         p2 = new Player();
 
+        currentPlayer = p1;
+        frontPlayer = p2;
+
         StringBuilder log = new StringBuilder();
 
         String input;
@@ -67,9 +70,8 @@ public class Controller {
         while(!input.equals("yield")){
 
             if(input.matches(ADD_BLOCK_COMMAND_REGEX)){
-
-                currentPlayer.playerBlocks.put(++currentPlayer.lastBlockId, new Block());
-                log.append(currentPlayer.lastBlockId).append("\n");
+                if(!currentPlayer.addBlock())
+                    log.append("not possible\n");
             }
 
             else if(input.matches(REMOVE_BLOCK_COMMAND_REGEX)){
@@ -79,10 +81,9 @@ public class Controller {
             }
             else if(input.matches(UPGRADE_BLOCK_COMMAND_REGEX)){
                 int blockId = Integer.parseInt(input.split(" ")[1]);
-                currentPlayer.upgradeBlock(blockId);
+                if(!currentPlayer.upgradeBlock(blockId))
+                    log.append("not possible\n");
             }
-
-
 
             else if(input.matches(ADD_HOME_COMMAND_REGEX)){
 
@@ -101,10 +102,8 @@ public class Controller {
                 if(s.length == 4){
                     if(!currentPlayer.upgradeHome(blockId, homeId, s[3]))
                         log.append("not possible\n");
-
                 }
                 else if(s.length == 5){
-
                     if(!currentPlayer.upgradeHome(blockId, homeId, s[3]+" "+s[4]))
                         log.append("not possible\n");
                 }
@@ -134,15 +133,28 @@ public class Controller {
 
             else if(input.equals("done")){
                 currentPlayer.passDay();
+
+                if(currentPlayer.equals(p2)){
+                    currentPlayer = p1;
+                    frontPlayer = p2;
+                }
+                else{
+                    currentPlayer = p2;
+                    frontPlayer = p1;
+                }
             }
 
             else if(input.equals("see gills")){
                 log.append(currentPlayer.getCredit()).append("\n");
             }
 
+            else if(input.equals("see score")){
+                log.append(currentPlayer.getScore()).append("\n");
+            }
+
             else if(input.matches("loot \\d+")){
                 String s = input.split(" ")[1];
-                int lootedAmount = frontPlayer.loot(Integer.parseInt(s));
+                int lootedAmount = currentPlayer.loot(frontPlayer, Integer.parseInt(s));
                 if(lootedAmount < 0){
                     log.append("not possible\n");
                 }
